@@ -31,6 +31,14 @@ Execute your compiled program by typing its name in the command prompt: my_progr
 
 
 
+
+
+
+
+
+
+
+
 Linux:
 Installing NASM:
 Install NASM using Package Manager:
