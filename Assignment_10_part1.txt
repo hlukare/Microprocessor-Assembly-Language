@@ -3,8 +3,11 @@ _start:
 
 section .text
 
-global str1, str2, strlen1, strlen2
+global str1, str2, strlen1, strlen2, strlen3, msg3
 extern display
+extern display1
+extern concat
+extern concat2
 
 %macro disp_msg 2
 mov rax,1
@@ -15,24 +18,31 @@ syscall
 %endmacro
 
 disp_msg msg1, len1
-disp_msg msg2, len2
 call display
+disp_msg msg2, len2
+call display1
 
-exit:	
+;call concat
+call concat
+
+
 mov rax,60
 mov rdi,0
 syscall
 
 section .data
 
-msg1 db "First string is :", 10
+msg1 db "First string is : "
 len1 equ $-msg1
 
-msg2 db "Second string is :", 10
+msg2 db "Second string is : "
 len2 equ $-msg2
 
-str1 db "Hello", 10
+str1 db "Hello ", 10
 strlen1 equ $-str1
 
 str2 db "World", 10
 strlen2 equ $-str2
+
+msg3 db "Concatenated string is : "
+strlen3 equ $-msg3
