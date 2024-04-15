@@ -1,0 +1,78 @@
+;Write an assembly language program to search an item in given data
+global _start
+_start:
+
+section .text
+
+%macro disp_msg 2
+mov rax,1
+mov rdi,1
+mov rsi,%1
+mov rdx,%2
+syscall
+%endmacro
+
+disp_msg msg3, len3
+mov rax, 12h
+mov rsi, arr
+
+a2:
+	cmp al, [rsi]
+    je a1
+    inc rsi
+    dec byte[cnt]
+    jnz a2
+    disp_msg msg2, len2
+    jmp exit
+a1:
+	disp_msg msg1, len1
+	
+exit:	
+mov rax,60
+mov rdi,0
+syscall
+
+display:
+mov rcx,02
+mov rsi,disparr+1
+l3:mov rdx,0h
+mov rbx,10h
+div rbx
+cmp dl,09h
+jbe l2
+add dl,07h
+l2: add dl,30h
+mov [rsi],dl
+dec rsi
+dec rcx
+jnz l3
+
+disp_msg disparr,2
+ret
+
+section .data
+arr db 05h, 03h, 12h, 06h, 09h
+cnt db 05 
+
+msg1 db "Element found", 10
+len1 equ $-msg1
+
+msg2 db "Element not found", 10
+len2 equ $-msg2
+
+msg3 db "Element to search is 12", 10
+len3 equ $-msg3
+
+
+section .bss
+disparr resb 30
+
+
+
+
+%if 0
+Element to search is 12
+Element found
+
+[Execution complete with exit code 0]
+%endif ; 0

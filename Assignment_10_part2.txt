@@ -1,0 +1,22 @@
+global _main 
+_main:
+
+section .text
+
+extern str1, str2, strlen1, strlen2
+global display
+
+%macro disp 2
+mov rax,1
+mov rdi,1
+mov rsi,%1
+mov rdx,%2
+syscall
+%endmacro
+
+display: 
+	disp str1, strlen1
+	disp str2, strlen2
+ret
+
+

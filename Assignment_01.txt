@@ -1,0 +1,38 @@
+; Problem Statement : Write an assembly language program to display “Hello World”
+
+global _start
+_start:
+section .text
+mov rax,1
+mov rdi,1
+mov rsi,message
+mov rdx,len
+syscall
+
+%macro display 2
+mov rax,1
+mov rdi,1
+mov rsi,%1
+mov rdx,%2
+syscall
+%endmacro
+
+display message2,len2
+
+mov rax,60
+mov rdi,0
+syscall
+
+section .data
+message: db "Hello",10
+len equ $-message
+message2: db "World",10
+len2 equ $-message2
+
+%if 0
+Output:
+Hello
+World
+
+[Execution complete with exit code 0]
+%endif ; 0

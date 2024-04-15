@@ -1,0 +1,110 @@
+;Write an assembly language program to count positive and negative numbers from an array
+
+global _start
+_start:
+
+section .text
+
+%macro dis 2
+mov rax,1
+mov rdi,1
+mov rsi,%1
+mov rdx,%2
+syscall
+%endmacro
+
+dis message,len
+call display_array
+call display_pos
+
+mov rax,60
+mov rdi,0
+syscall
+
+display_array:
+mov rsi,array1
+a1:
+push rsi
+mov rax,[rsi]
+call display
+dis space,len4
+pop rsi
+inc rsi
+dec byte[cnt]
+jnz a1
+ret
+
+;check negative or positive
+display_pos:
+mov rsi,array1
+s1: 
+bt qword[rsi],7
+jc n1
+p1:
+inc byte[pcnt]
+jmp next
+n1:
+inc byte[ncnt]
+next:
+inc rsi
+dec byte[cnt1]
+jnz s1
+
+dis message1,len1
+mov rax,[ncnt]
+call display
+
+dis message2,len2
+mov rax,[pcnt]
+call display
+ret
+
+
+
+
+display:
+mov rsi, disarr+1
+mov rcx,2
+l1:
+mov rdx,0
+mov rbx,10h
+div rbx
+cmp dl,09h
+jbe l2
+add dl,07h
+l2:
+add dl,30h
+mov [rsi],dl
+dec rsi
+dec rcx
+jnz l1
+dis disarr,2
+ret
+
+
+section .bss
+disarr resb 4
+ncnt resb 1
+pcnt resb 1
+
+section .data
+message1 db 10,"Negative: "
+len1 equ $-message1
+message2 db 10,"Positive: "
+len2 equ $-message2
+message db "Array : "
+len equ $-message
+array1 db -01h,-05h,-52h,08h,06h,11h,52h,08h,10h,7fh
+;would work only upto 80 because 8 bit number ranges from -128 to 127
+cnt db 10
+cnt1 db 10
+space db " "
+len4 equ $-space
+
+%if 0
+Output:
+Array : FF FB AE 08 06 11 52 08 10 7F 
+Negative: 03
+Positive: 07
+[Execution complete with exit code 0]
+%endif ; 0

@@ -1,0 +1,38 @@
+global _start
+_start:
+
+section .text
+
+global str1, str2, strlen1, strlen2
+extern display
+
+%macro disp_msg 2
+mov rax,1
+mov rdi,1
+mov rsi,%1
+mov rdx,%2
+syscall
+%endmacro
+
+disp_msg msg1, len1
+disp_msg msg2, len2
+call display
+
+exit:	
+mov rax,60
+mov rdi,0
+syscall
+
+section .data
+
+msg1 db "First string is :", 10
+len1 equ $-msg1
+
+msg2 db "Second string is :", 10
+len2 equ $-msg2
+
+str1 db "Hello", 10
+strlen1 equ $-str1
+
+str2 db "World", 10
+strlen2 equ $-str2
