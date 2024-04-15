@@ -3,8 +3,11 @@ _main:
 
 section .text
 
-extern str1, str2, strlen1, strlen2
+extern str1, str2, strlen1, strlen2, strlen3, msg3
 global display
+global display1
+global concat
+global concat2
 
 %macro disp 2
 mov rax,1
@@ -16,7 +19,31 @@ syscall
 
 display: 
 	disp str1, strlen1
-	disp str2, strlen2
+ret
+display1: 
+	disp str2, strlen2	
 ret
 
+concat:
+	
+cld
+    
+    mov rsi, str1  ; Source pointer for str1
+    mov rdi, arr   ; Destination pointer
+    mov rcx, 06    ; Length of str1
+    rep movsb      ; Copy str1 to arr
+cld
 
+mov rsi, str2     ; Source pointer for str1
+    mov rdi, arr  ; Destination pointer
+    add rdi,06
+    mov rcx, 06   ; Length of str1
+    rep movsb     ; Copy str1 to arr
+
+disp msg3, strlen3
+disp arr,0Bh
+ret
+
+section .bss
+arr resb 32
+len resb 32
